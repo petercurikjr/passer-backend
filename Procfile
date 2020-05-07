@@ -1,1 +1,1 @@
-web: gunicorn requesthandler: app
+web: gunicorn -b :$PORT app:app

@@ -13,9 +13,6 @@ cors = CORS(app) #enables my website to GET from this server. for more, see enab
 cache = Cache(app, config = {'CACHE_TYPE': 'simple'})  #COFIGURATE cache and create Cache instance
 dic = {}
 
-import sys
-print(sys.modules)
-
 @app.route('/', methods=['POST']) #requests to allow
 @cache.cached(timeout=0.001)
 def processDataFromApp():

@@ -1,3 +1,12 @@
+from flask import Flask
+app = Flask(__name__)
+
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
+
+
+'''
 #view.py
 #this file handles POST requests from iOS Passer app.
 #after recieving a sixdigit code with uuid of the user's device, Flask builds a dict out of it and writes it to in memory cache in json format for a limited time (2 min)
@@ -55,3 +64,4 @@ def verifyTimeStamps(currentDate):
 
 if __name__ == '__main__':
     app.run(threaded=True, port=5000)
+'''

@@ -37,23 +37,14 @@ def processDataFromWeb():
     print(sixdigitTyped)
     key = verify(sixdigitTyped)
     if key != None:
-        print('success')
         return jsonify(dic[key])
-    print('wrongcode')
     return 'Wrong code'
 
 def verify(sixdigitTyped):
-    print('dictionary:')
-    for x in dic:
-        print ('key: ' +x)
-        print('sixdigit: ' +dic[x][0])
-            
     for deviceID in dic.keys():
         print(dic[deviceID][0])
         if dic[deviceID][0] == sixdigitTyped:
-            print('here')
             return deviceID
-    print('failed')
     return None
 
 def verifyTimeStamps(currentDate):
@@ -66,4 +57,4 @@ def verifyTimeStamps(currentDate):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(threaded=False, processes=1)

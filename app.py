@@ -6,13 +6,13 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 #from flask_caching import Cache
 from datetime import datetime
-#from werkzeug.contrib.cache import MemcachedCache
+from werkzeug.contrib.cache import SimpleCache
 
 app = Flask(__name__) #create a flask app
 cors = CORS(app) #enables my website to GET from this server. for more, see enable-cors.org/server_flask.html
 
 #cache = Cache(app, config = {'CACHE_TYPE': 'simple'})  #COFIGURATE cache and create Cache instance
-#cache = MemcachedCache(['127.0.0.1:11211'])
+cache = SimpleCache()
 dic = {}
 
 @app.route('/', methods=['POST']) #requests to allow
@@ -28,9 +28,11 @@ def processDataFromApp():
     #cacheVal = [sixdigitCode, passwordItems, bankCardItems, otherItems]
     #print(cache.set('key', 'cacheVal', timeout=50))
     dic[deviceID] = [sixdigitCode, dateStr, passwordItems, bankCardItems, otherItems]
-    verifyTimeStamps(datetime.now());
-    return jsonify(dic)
-
+    
+    cache.set(deviceID,event,timeout=5)
+    #verifyTimeStamps(datetime.now());
+    #return jsonify(dic)
+    return cache.get(deviceID)
 
 @app.route('/verify_from_website', methods=['POST'])
 def processDataFromWeb():

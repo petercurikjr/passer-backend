@@ -47,7 +47,7 @@ def verify(sixdigitTyped):
     for x in dic:
         print (x)
         for y in dic[x]:
-            print (y,':',cars[x][y])
+            print (y,':',dic[x][y])
             
     for deviceID in dic.keys():
         print(dic[deviceID][0])

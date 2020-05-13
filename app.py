@@ -17,7 +17,7 @@ cache = SimpleCache()
 @app.route('/', methods=['POST']) #requests to allow
 #@cache.cached(timeout=0.001)
 def processDataFromApp():
-    #dic = {}
+    dic = {}
     incomingData = request.get_json()
     deviceID = incomingData['deviceID']
     sixdigitCode = incomingData['sixdigitCode']
@@ -29,8 +29,8 @@ def processDataFromApp():
     #print(cache.set('key', 'cacheVal', timeout=50))
     #dic[deviceID] = [sixdigitCode, dateStr, passwordItems, bankCardItems, otherItems]
     
-    arr = [sixdigitCode, dateStr, passwordItems, bankCardItems, otherItems]
-    cache.set(deviceID,arr,timeout=5)
+    dic[dateStr] = [sixdigitCode, passwordItems, bankCardItems, otherItems]
+    cache.set(deviceID,dic,timeout=5)
     #verifyTimeStamps(datetime.now());
     #return jsonify(dic)
     return cache.get(deviceID)

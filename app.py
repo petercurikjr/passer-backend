@@ -25,7 +25,7 @@ def processDataFromApp():
     passwordItems = incomingData.get('passwordItems')
     bankCardItems = incomingData.get('bankCardItems')
     otherItems = incomingData.get('otherItems')
-    cacheVal = [sixdigitCode, dateStr, passwordItems, bankCardItems, otherItems]
+    cacheVal = [sixdigitCode, passwordItems, bankCardItems, otherItems]
     cache.set(deviceID, cacheVal, timeout=5)
     #dic[deviceID] = [sixdigitCode, dateStr, passwordItems, bankCardItems, otherItems]
     #verifyTimeStamps(datetime.now());

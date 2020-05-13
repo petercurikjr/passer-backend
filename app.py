@@ -43,7 +43,12 @@ def processDataFromWeb():
     return 'Wrong code'
 
 def verify(sixdigitTyped):
-    print('dictionary:' + dic)
+    print('dictionary:')
+    for x in dic:
+        print (x)
+        for y in dic[x]:
+            print (y,':',cars[x][y])
+            
     for deviceID in dic.keys():
         print(dic[deviceID][0])
         if dic[deviceID][0] == sixdigitTyped:

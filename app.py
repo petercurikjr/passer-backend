@@ -13,11 +13,11 @@ cors = CORS(app) #enables my website to GET from this server. for more, see enab
 
 #cache = Cache(app, config = {'CACHE_TYPE': 'simple'})  #COFIGURATE cache and create Cache instance
 cache = SimpleCache()
-dic = {}
 
 @app.route('/', methods=['POST']) #requests to allow
 #@cache.cached(timeout=0.001)
 def processDataFromApp():
+    #dic = {}
     incomingData = request.get_json()
     deviceID = incomingData['deviceID']
     sixdigitCode = incomingData['sixdigitCode']
@@ -27,9 +27,10 @@ def processDataFromApp():
     otherItems = incomingData.get('otherItems')
     #cacheVal = [sixdigitCode, passwordItems, bankCardItems, otherItems]
     #print(cache.set('key', 'cacheVal', timeout=50))
-    dic[deviceID] = [sixdigitCode, dateStr, passwordItems, bankCardItems, otherItems]
+    #dic[deviceID] = [sixdigitCode, dateStr, passwordItems, bankCardItems, otherItems]
     
-    cache.set(deviceID,dic,timeout=5)
+    arr = [sixdigitCode, dateStr, passwordItems, bankCardItems, otherItems]
+    cache.set(deviceID,arr,timeout=5)
     #verifyTimeStamps(datetime.now());
     #return jsonify(dic)
     return cache.get(deviceID)

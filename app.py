@@ -12,8 +12,8 @@ app = Flask(__name__) #create a flask app
 cors = CORS(app) #enables my website to GET from this server. for more, see enable-cors.org/server_flask.html
 
 #cache = Cache(app, config = {'CACHE_TYPE': 'simple'})  #COFIGURATE cache and create Cache instance
-cache = MemcachedCache(['127.0.0.1:11211'])
-#dic = {}
+#cache = MemcachedCache(['127.0.0.1:11211'])
+dic = {}
 
 @app.route('/', methods=['POST']) #requests to allow
 #@cache.cached(timeout=0.001)
@@ -27,11 +27,10 @@ def processDataFromApp():
     otherItems = incomingData.get('otherItems')
     cacheVal = [sixdigitCode, passwordItems, bankCardItems, otherItems]
     print(cache.set('key', 'cacheVal', timeout=50))
-    #dic[deviceID] = [sixdigitCode, dateStr, passwordItems, bankCardItems, otherItems]
-    #verifyTimeStamps(datetime.now());
-    #return jsonify(dic)]
-    print(cache.get('key'))
-    return 'ok'
+    dic[deviceID] = [sixdigitCode, dateStr, passwordItems, bankCardItems, otherItems]
+    verifyTimeStamps(datetime.now());
+    return jsonify(dic)
+
 
 @app.route('/verify_from_website', methods=['POST'])
 def processDataFromWeb():

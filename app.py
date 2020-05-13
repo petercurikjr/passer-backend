@@ -21,7 +21,7 @@ def processDataFromApp():
     incomingData = request.get_json()
     deviceID = incomingData['deviceID']
     sixdigitCode = incomingData['sixdigitCode']
-    #dateStr = datetime.now().strftime('%d/%m/%Y %H:%M:%S')
+    dateStr = datetime.now().strftime('%d/%m/%Y %H:%M:%S')
     passwordItems = incomingData.get('passwordItems')
     bankCardItems = incomingData.get('bankCardItems')
     otherItems = incomingData.get('otherItems')

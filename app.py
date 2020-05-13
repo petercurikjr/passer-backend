@@ -45,9 +45,8 @@ def processDataFromWeb():
 def verify(sixdigitTyped):
     print('dictionary:')
     for x in dic:
-        print (x)
-        for y in dic[x]:
-            print (y,':',dic[x][y])
+        print ('key: ' +x)
+        print('sixdigit: ' +dic[x][0])
             
     for deviceID in dic.keys():
         print(dic[deviceID][0])

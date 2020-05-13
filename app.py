@@ -29,7 +29,7 @@ def processDataFromApp():
     #print(cache.set('key', 'cacheVal', timeout=50))
     dic[deviceID] = [sixdigitCode, dateStr, passwordItems, bankCardItems, otherItems]
     
-    cache.set(deviceID,event,timeout=5)
+    cache.set(deviceID,dic,timeout=5)
     #verifyTimeStamps(datetime.now());
     #return jsonify(dic)
     return cache.get(deviceID)

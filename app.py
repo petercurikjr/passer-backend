@@ -31,6 +31,7 @@ def processDataFromApp():
 
 @app.route('/verify_from_website', methods=['POST'])
 def processDataFromWeb():
+    verifyTimeStamps(datetime.now());
     incomingData = request.get_json()
     sixdigitTyped = incomingData['sixdigitTyped']
     key = verify(sixdigitTyped)

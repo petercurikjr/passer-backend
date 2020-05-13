@@ -29,28 +29,32 @@ def processDataFromApp():
     #print(cache.set('key', 'cacheVal', timeout=50))
     #dic[deviceID] = [sixdigitCode, dateStr, passwordItems, bankCardItems, otherItems]
     
-    dic[dateStr] = [sixdigitCode, passwordItems, bankCardItems, otherItems]
-    cache.set(deviceID,dic,timeout=2*60)
+    dic[sixdigitCode] = [dateStr, passwordItems, bankCardItems, otherItems]
+    cache.set(sixdigitCode,dic,timeout=2*60)
     #verifyTimeStamps(datetime.now());
     #return jsonify(dic)
-    return cache.get(deviceID)
+    return cache.get(sixdigitCode)
 
 @app.route('/verify_from_website', methods=['POST'])
 def processDataFromWeb():
-    verifyTimeStamps(datetime.now());
+    #verifyTimeStamps(datetime.now());
     incomingData = request.get_json()
     sixdigitTyped = incomingData['sixdigitTyped']
-    key = verify(sixdigitTyped)
-    if key != None:
-        return jsonify(dic[key])
+    data = cache.get(sixdigitTyped)
+    if data != None:
+        return data
     return 'Wrong code'
-
+    #key = verify(sixdigitTyped)
+    #if key != None:
+     #   return jsonify(dic[key])
+    #return 'Wrong code'
+'''
 def verify(sixdigitTyped):
     for deviceID in dic.keys():
         if dic[deviceID][0] == sixdigitTyped:
             return deviceID
     return None
-
+    
 def verifyTimeStamps(currentDate):
     for item in list(dic.keys()):
         dateFromCache = datetime.strptime(dic[item][1], '%d/%m/%Y %H:%M:%S')
@@ -58,6 +62,7 @@ def verifyTimeStamps(currentDate):
         minutesDelta = delta.seconds / 60
         if minutesDelta > 1.99:
             del dic[item]
+'''
 
 
 if __name__ == '__main__':

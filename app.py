@@ -26,7 +26,7 @@ def processDataFromApp():
     bankCardItems = incomingData.get('bankCardItems')
     otherItems = incomingData.get('otherItems')
     cacheVal = [sixdigitCode, passwordItems, bankCardItems, otherItems]
-    cache.set('key', cacheVal, timeout=5)
+    cache.set('key', "cacheVal", timeout=5)
     #dic[deviceID] = [sixdigitCode, dateStr, passwordItems, bankCardItems, otherItems]
     #verifyTimeStamps(datetime.now());
     #return jsonify(dic)]

@@ -4,37 +4,39 @@
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from flask_caching import Cache
+#from flask_caching import Cache
 from datetime import datetime
+from werkzeug.contrib.cache import MemcachedCache
 
 app = Flask(__name__) #create a flask app
 cors = CORS(app) #enables my website to GET from this server. for more, see enable-cors.org/server_flask.html
 
-cache = Cache(app, config = {'CACHE_TYPE': 'simple'})  #COFIGURATE cache and create Cache instance
-dic = {}
+#cache = Cache(app, config = {'CACHE_TYPE': 'simple'})  #COFIGURATE cache and create Cache instance
+cache = MemcachedCache(['127.0.0.1:11211'])
+#dic = {}
 
 @app.route('/', methods=['POST']) #requests to allow
-@cache.cached(timeout=0.001)
+#@cache.cached(timeout=0.001)
 def processDataFromApp():
     incomingData = request.get_json()
-    
     deviceID = incomingData['deviceID']
     sixdigitCode = incomingData['sixdigitCode']
-    dateStr = datetime.now().strftime('%d/%m/%Y %H:%M:%S')
+    #dateStr = datetime.now().strftime('%d/%m/%Y %H:%M:%S')
     passwordItems = incomingData.get('passwordItems')
     bankCardItems = incomingData.get('bankCardItems')
     otherItems = incomingData.get('otherItems')
-    
-    dic[deviceID] = [sixdigitCode, dateStr, passwordItems, bankCardItems, otherItems]
-    verifyTimeStamps(datetime.now());
-    return jsonify(dic)
+    cacheVal = [sixdigitCode, dateStr, passwordItems, bankCardItems, otherItems]
+    cache.set(deviceID, cacheVal, timeout=5)
+    #dic[deviceID] = [sixdigitCode, dateStr, passwordItems, bankCardItems, otherItems]
+    #verifyTimeStamps(datetime.now());
+    #return jsonify(dic)]
+    return cache.get(deviceID)
 
 @app.route('/verify_from_website', methods=['POST'])
 def processDataFromWeb():
     verifyTimeStamps(datetime.now());
     incomingData = request.get_json()
     sixdigitTyped = incomingData['sixdigitTyped']
-    print(sixdigitTyped)
     key = verify(sixdigitTyped)
     if key != None:
         return jsonify(dic[key])
@@ -42,7 +44,6 @@ def processDataFromWeb():
 
 def verify(sixdigitTyped):
     for deviceID in dic.keys():
-        print(dic[deviceID][0])
         if dic[deviceID][0] == sixdigitTyped:
             return deviceID
     return None

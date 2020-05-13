@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 #from flask_caching import Cache
 from datetime import datetime
-from werkzeug.contrib.cache import MemcachedCache
+#from werkzeug.contrib.cache import MemcachedCache
 
 app = Flask(__name__) #create a flask app
 cors = CORS(app) #enables my website to GET from this server. for more, see enable-cors.org/server_flask.html
@@ -25,8 +25,8 @@ def processDataFromApp():
     passwordItems = incomingData.get('passwordItems')
     bankCardItems = incomingData.get('bankCardItems')
     otherItems = incomingData.get('otherItems')
-    cacheVal = [sixdigitCode, passwordItems, bankCardItems, otherItems]
-    print(cache.set('key', 'cacheVal', timeout=50))
+    #cacheVal = [sixdigitCode, passwordItems, bankCardItems, otherItems]
+    #print(cache.set('key', 'cacheVal', timeout=50))
     dic[deviceID] = [sixdigitCode, dateStr, passwordItems, bankCardItems, otherItems]
     verifyTimeStamps(datetime.now());
     return jsonify(dic)

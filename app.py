@@ -30,7 +30,7 @@ def processDataFromApp():
     #dic[deviceID] = [sixdigitCode, dateStr, passwordItems, bankCardItems, otherItems]
     
     dic[dateStr] = [sixdigitCode, passwordItems, bankCardItems, otherItems]
-    cache.set(deviceID,dic,timeout=5)
+    cache.set(deviceID,dic,timeout=2*60)
     #verifyTimeStamps(datetime.now());
     #return jsonify(dic)
     return cache.get(deviceID)

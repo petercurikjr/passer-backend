@@ -34,15 +34,20 @@ def processDataFromWeb():
     verifyTimeStamps(datetime.now());
     incomingData = request.get_json()
     sixdigitTyped = incomingData['sixdigitTyped']
+    print(sixdigitTyped)
     key = verify(sixdigitTyped)
     if key != None:
+        print('success')
         return jsonify(dic[key])
+    print('wrongcode')
     return 'Wrong code'
 
 def verify(sixdigitTyped):
     for deviceID in dic.keys():
         if dic[deviceID][0] == sixdigitTyped:
+            print('here')
             return deviceID
+    print('failed')
     return None
 
 def verifyTimeStamps(currentDate):

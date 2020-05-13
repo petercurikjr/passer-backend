@@ -9,3 +9,4 @@ requests==2.20.0
 requests-unixsocket==0.1.5
 simplejson==3.13.2
 Werkzeug==0.16.0
+python-memcached==1.59

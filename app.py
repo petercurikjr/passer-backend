@@ -51,7 +51,7 @@ def processDataFromWeb():
     return 'Wrong code'
     
 @app.route('/verifyQRfromwebsite')
-@cross_origin
+@cross_origin()
 def yieldQRresult():
     def checkSessionID():
         yield "lol"

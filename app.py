@@ -3,7 +3,7 @@
 #after recieving a sixdigit code with uuid of the user's device, Flask builds a dict out of it and writes it to in memory cache in json format for a limited time (2 min)
 
 from flask import Flask, request, jsonify, Response
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from datetime import datetime
 from werkzeug.contrib.cache import SimpleCache
 
@@ -51,6 +51,7 @@ def processDataFromWeb():
     return 'Wrong code'
     
 @app.route('/verifyQRfromwebsite')
+@cross_origin
 def yieldQRresult():
     def checkSessionID():
         yield "lol"

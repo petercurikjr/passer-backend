@@ -29,7 +29,8 @@ def processSixDigitFromApp():
 
 @app.route('/qr', methods=['POST'])
 def processQRFromApp():
-    return 'ok'
+    
+    return request
 
 @app.route('/verify_from_website', methods=['POST'])
 def processDataFromWeb():

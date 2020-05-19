@@ -8,12 +8,12 @@ from datetime import datetime
 from werkzeug.contrib.cache import SimpleCache
 
 app = Flask(__name__) #create a flask app
-cors = CORS(app) #enables my website to GET from this server. for more, see enable-cors.org/server_flask.html
+cors = CORS(app) #enables javascript to GET from this server. for more, see enable-cors.org/server_flask.html
 
 cache = SimpleCache()
 
-@app.route('/', methods=['POST']) #requests to allow
-def processDataFromApp():
+@app.route('/sixdigit', methods=['POST']) #requests to allow
+def processSixDigitFromApp():
     dic = {}
     incomingData = request.get_json()
     deviceID = incomingData['deviceID']
@@ -25,7 +25,11 @@ def processDataFromApp():
     
     dic[sixdigitCode] = [passwordItems, bankCardItems, otherItems, dateStr]
     cache.set(sixdigitCode,dic,timeout=2*60)
-    return cache.get(sixdigitCode)
+    return 'ok'
+
+@app.route('/qr', methods=['POST'])
+def processQRFromApp():
+    return 'ok'
 
 @app.route('/verify_from_website', methods=['POST'])
 def processDataFromWeb():

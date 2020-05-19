@@ -47,6 +47,7 @@ def processDataFromWeb():
     sixdigitTyped = incomingData['sixdigitTyped']
     data = cache.get(sixdigitTyped)
     if data != None:
+        cache.delete(sixdigitTyped)
         return data
     return 'Wrong code'
     
@@ -54,8 +55,10 @@ def processDataFromWeb():
 def processSessionIDFromWeb():
     incomingData = request.get_json()
     sessionID = incomingData['sessionID']
-    if cache.has(sessionID):
-        return cache.get(sessionID)
+    data = cache.get(sessionID)
+    if data != None:
+        cache.delete(sessionID)
+        return data
     return 'Nothing'
 
 if __name__ == '__main__':

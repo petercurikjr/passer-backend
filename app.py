@@ -2,7 +2,7 @@
 #this file handles POST requests from iOS Passer app.
 #after recieving a sixdigit code with uuid of the user's device, Flask builds a dict out of it and writes it to in memory cache in json format for a limited time (2 min)
 
-from flask import Flask, request, jsonify, Response
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from datetime import datetime
 from werkzeug.contrib.cache import SimpleCache
@@ -11,6 +11,7 @@ app = Flask(__name__) #create a flask app
 cors = CORS(app) #enables javascript to GET from this server. for more, see enable-cors.org/server_flask.html
 
 cache = SimpleCache()
+sessionIDs = {}
 
 @app.route('/sixdigit', methods=['POST']) #requests to allow
 def processSixDigitFromApp():
@@ -38,8 +39,7 @@ def processQRFromApp():
     otherItems = incomingData.get('otherItems')
     
     dic[sessionID] = [passwordItems, bankCardItems, otherItems, dateStr]
-    checkSessionID(sessionID)
-    #cache.set(sessionID,dic,timeout=2*60)
+    cache.set(sessionID,dic,timeout=2*60)
     return 'ok'
 
 @app.route('/verifySixDigitfromwebsite', methods=['POST'])
@@ -51,12 +51,13 @@ def processDataFromWeb():
         return data
     return 'Wrong code'
     
-@app.route('/verifyQRfromwebsite')
-def yieldQRresult():
-    return Response(checkSessionID(), mimetype = 'text/event-stream')
-    
-def checkSessionID(sessionID):
-    yield 'data: ' + sessionID + '\n\n'
+@app.route('/verifyQRfromwebsite', methods=['POST'])
+def processSessionIDFromWeb():
+    incomingData = request.get_json()
+    sessionID = incomingData['sessionID']
+    if cache.has(sessionID):
+        return cache.get(sessionID)
+    return 'Nothing'
 
 if __name__ == '__main__':
     app.run(threaded=False, processes=1)

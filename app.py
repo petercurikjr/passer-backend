@@ -56,7 +56,7 @@ def yieldQRresult():
     return Response(checkSessionID(), mimetype = 'text/event-stream')
     
 def checkSessionID():
-    yield "lol\n"
+    yield "lol\n\n"
 
 if __name__ == '__main__':
     app.run(threaded=True, processes=1)

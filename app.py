@@ -54,7 +54,7 @@ def processDataFromWeb():
 def yieldQRresult():
     def checkSessionID():
         yield "lol"
-    return Response(checkSessionID(), mimetype = 'text/plain')
+    return Response(checkSessionID(), mimetype = 'text/event-stream')
 
 if __name__ == '__main__':
     app.run(threaded=False, processes=1)

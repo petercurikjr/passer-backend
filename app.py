@@ -53,9 +53,10 @@ def processDataFromWeb():
 @app.route('/verifyQRfromwebsite')
 #@cross_origin()
 def yieldQRresult():
-    def checkSessionID():
-        yield "lol"
     return Response(checkSessionID(), mimetype = 'text/event-stream')
+    
+def checkSessionID():
+    yield "lol\n"
 
 if __name__ == '__main__':
     app.run(threaded=True, processes=1)

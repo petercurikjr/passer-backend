@@ -38,7 +38,8 @@ def processQRFromApp():
     otherItems = incomingData.get('otherItems')
     
     dic[sessionID] = [passwordItems, bankCardItems, otherItems, dateStr]
-    cache.set(sessionID,dic,timeout=2*60)
+    checkSessionID(sessionID)
+    #cache.set(sessionID,dic,timeout=2*60)
     return 'ok'
 
 @app.route('/verifySixDigitfromwebsite', methods=['POST'])
@@ -54,8 +55,8 @@ def processDataFromWeb():
 def yieldQRresult():
     return Response(checkSessionID(), mimetype = 'text/event-stream')
     
-def checkSessionID():
-    yield 'data: lol\n\n'
+def checkSessionID(sessionID):
+    yield 'data: ' + sessionID + '\n\n'
 
 if __name__ == '__main__':
     app.run(threaded=False, processes=1)

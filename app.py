@@ -11,7 +11,6 @@ app = Flask(__name__) #create a flask app
 cors = CORS(app) #enables javascript to GET from this server. for more, see enable-cors.org/server_flask.html
 
 cache = SimpleCache()
-sessionIDs = {}
 
 @app.route('/sixdigit', methods=['POST']) #requests to allow
 def processSixDigitFromApp():

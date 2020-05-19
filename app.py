@@ -24,15 +24,24 @@ def processSixDigitFromApp():
     otherItems = incomingData.get('otherItems')
     
     dic[sixdigitCode] = [passwordItems, bankCardItems, otherItems, dateStr]
-    cache.set(sixdigitCode,dic,timeout=2*60)
+    cache.set(sixdigitCode,dic,timeout=2*60) #identifier, value, timeout
     return 'ok'
 
 @app.route('/qr', methods=['POST'])
 def processQRFromApp():
+    dic = {}
+    incomingData = request.get_json()
+    sessionID = incomingData['sessionID']
+    dateStr = datetime.now().strftime('%d/%m/%Y %H:%M:%S')
+    passwordItems = incomingData.get('passwordItems')
+    bankCardItems = incomingData.get('bankCardItems')
+    otherItems = incomingData.get('otherItems')
     
-    return request
+    dic[sessionID] = [passwordItems, bankCardItems, otherItems, dateStr]
+    cache.set(sessionID,dic,timeout=2*60)
+    return 'ok'
 
-@app.route('/verify_from_website', methods=['POST'])
+@app.route('/verifySixDigitfromwebsite', methods=['POST'])
 def processDataFromWeb():
     incomingData = request.get_json()
     sixdigitTyped = incomingData['sixdigitTyped']
@@ -40,6 +49,12 @@ def processDataFromWeb():
     if data != None:
         return data
     return 'Wrong code'
+    
+@app.route('/verifyQRfromwebsite')
+def yieldQRresult():
+    def checkSessionID():
+        yield "lol"
+    return Response(checkSessionID(), mimetype = 'text/event-stream')
 
 if __name__ == '__main__':
     app.run(threaded=False, processes=1)

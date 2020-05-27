@@ -58,8 +58,8 @@ def processDataFromWeb():
         cache.delete(sixdigitTyped)
         cache.delete(data[-1]) #last element of data list (deviceID)
         response[sixdigitTyped] = data #flask cannot return list. converting to dict
-        return response #returning dict
-    return 'Wrong code'
+        return response, 201 #returning dict
+    return 'Wrong code', 404
     
 #website - QR code
 @app.route('/verifyQRfromwebsite', methods=['POST'])
@@ -71,8 +71,8 @@ def processSessionIDFromWeb():
     if data != None:
         cache.delete(sessionID)
         response[sessionID] = data #flask cannot return list. converting to dict
-        return response #returning dict
-    return 'Nothing'
+        return response, 201 #returning dict
+    return 'Nothing', 404
 
 if __name__ == '__main__':
     app.run(threaded=False, processes=1)

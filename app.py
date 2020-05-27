@@ -54,7 +54,7 @@ def processQRFromApp():
 #website - six digit code
 @app.route('/verifySixDigitfromwebsite', methods=['POST'])
 def processDataFromWeb():
-    reponse = {}
+    response = {}
     incomingData = request.get_json()
     sixdigitTyped = incomingData['sixdigitTyped']
     data = cache.get(sixdigitTyped)

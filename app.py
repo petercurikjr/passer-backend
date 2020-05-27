@@ -18,7 +18,6 @@ def processSixDigitFromApp():
     
     deviceID = incomingData['deviceID']
     sixdigitCode = incomingData['sixdigitCode']
-    dateStr = datetime.now().strftime('%d/%m/%Y %H:%M:%S')
     passwordItems = incomingData.get('passwordItems')
     bankCardItems = incomingData.get('bankCardItems')
     otherItems = incomingData.get('otherItems')
@@ -32,23 +31,20 @@ def processSixDigitFromApp():
         cache.delete(userOldVerifData)
         
     cache.set(deviceID,sixdigitCode,timeout=2*60) #map deviceID to sixdigitCode
-    cache.set(sixdigitCode,[passwordItems, bankCardItems, otherItems, dateStr, deviceID],timeout=2*60) #map sixdigitCode to passer items data
+    cache.set(sixdigitCode,[passwordItems, bankCardItems, otherItems, deviceID],timeout=2*60) #map sixdigitCode to passer items data
     return 'server: ok', 201
 
 #Passer - QR code
 @app.route('/qr', methods=['POST'])
 def processQRFromApp():
-    dic = {}
     incomingData = request.get_json()
     
     sessionID = incomingData['sessionID']
-    dateStr = datetime.now().strftime('%d/%m/%Y %H:%M:%S')
     passwordItems = incomingData.get('passwordItems')
     bankCardItems = incomingData.get('bankCardItems')
     otherItems = incomingData.get('otherItems')
     
-    dic[sessionID] = [passwordItems, bankCardItems, otherItems, dateStr]
-    cache.set(sessionID,dic,timeout=2*60)
+    cache.set(sessionID,[passwordItems, bankCardItems, otherItems, sessionID],timeout=2*60)
     return 'server: ok', 201
 
 #website - six digit code
@@ -68,12 +64,14 @@ def processDataFromWeb():
 #website - QR code
 @app.route('/verifyQRfromwebsite', methods=['POST'])
 def processSessionIDFromWeb():
+    response = {}
     incomingData = request.get_json()
     sessionID = incomingData['sessionID']
     data = cache.get(sessionID)
     if data != None:
         cache.delete(sessionID)
-        return data
+        response[sessionID] = data #flask cannot return list. converting to dict
+        return response #returning dict
     return 'Nothing'
 
 if __name__ == '__main__':

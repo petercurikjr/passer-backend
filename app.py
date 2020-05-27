@@ -14,7 +14,6 @@ cache = SimpleCache()
 #Passer - six digit code
 @app.route('/sixdigit', methods=['POST']) #requests to allow
 def processSixDigitFromApp():
-    dic = {}
     incomingData = request.get_json()
     
     deviceID = incomingData['deviceID']
@@ -32,9 +31,8 @@ def processSixDigitFromApp():
         cache.delete(deviceID)
         cache.delete(userOldVerifData)
         
-    dic[sixdigitCode] = [passwordItems, bankCardItems, otherItems, dateStr, deviceID]
     cache.set(deviceID,sixdigitCode,timeout=2*60) #map deviceID to sixdigitCode
-    cache.set(sixdigitCode,dic,timeout=2*60) #map sixdigitCode to passer items data
+    cache.set(sixdigitCode,[passwordItems, bankCardItems, otherItems, dateStr, deviceID],timeout=2*60) #map sixdigitCode to passer items data
     return 'server: ok', 201
 
 #Passer - QR code

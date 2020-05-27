@@ -61,7 +61,7 @@ def processDataFromWeb():
     if data != None:
         cache.delete(sixdigitTyped)
         cache.delete(data[-1]) #last element of data list (deviceID)
-        reponse[sixdigitTyped] = data #flask cannot return list. converting to dict
+        response[sixdigitTyped] = data #flask cannot return list. converting to dict
         return response #returning dict
     return 'Wrong code'
     

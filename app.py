@@ -54,13 +54,15 @@ def processQRFromApp():
 #website - six digit code
 @app.route('/verifySixDigitfromwebsite', methods=['POST'])
 def processDataFromWeb():
+    reponse = {}
     incomingData = request.get_json()
     sixdigitTyped = incomingData['sixdigitTyped']
     data = cache.get(sixdigitTyped)
     if data != None:
         cache.delete(sixdigitTyped)
         cache.delete(data[-1]) #last element of data list (deviceID)
-        return data
+        reponse[sixdigitTyped] = data #flask cannot return list. converting to dict
+        return response #returning dict
     return 'Wrong code'
     
 #website - QR code

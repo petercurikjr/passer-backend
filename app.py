@@ -26,6 +26,8 @@ def processSixDigitFromApp():
         sixdigitCode = []
         for i in range(6):
             sixdigitCode.append(randint(0,9))
+        
+        sixdigitCode = ''.join(map(str, sixdigitCode))
     
         if not cache.has(sixdigitCode): #check if this six digit code is already in the cache
             break
@@ -37,7 +39,7 @@ def processSixDigitFromApp():
         
     cache.set(deviceID,sixdigitCode,timeout=2*60) #map deviceID to sixdigitCode
     cache.set(sixdigitCode,[passwordItems, bankCardItems, otherItems, deviceID],timeout=2*60) #map sixdigitCode to passer items data
-    return ''.join(map(str, sixdigitCode))
+    return sixdigitCode
 
 #Passer - QR code
 @app.route('/qr', methods=['POST'])

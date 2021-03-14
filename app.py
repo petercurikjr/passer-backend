@@ -5,6 +5,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from datetime import datetime
 from werkzeug.contrib.cache import SimpleCache
+from random import randint
 
 app = Flask(__name__) #create a flask app
 cors = CORS(app) #enables javascript to interact with this server. for more, see enable-cors.org/server_flask.html
@@ -17,13 +18,17 @@ def processSixDigitFromApp():
     incomingData = request.get_json()
     
     deviceID = incomingData['deviceID']
-    sixdigitCode = incomingData['sixdigitCode']
     passwordItems = incomingData.get('passwordItems')
     bankCardItems = incomingData.get('bankCardItems')
     otherItems = incomingData.get('otherItems')
     
-    if cache.has(sixdigitCode):
-        return 409 #conflict - this six digit code is already in the cache
+    while True:
+        sixdigitCode = []
+        for i in range(6):
+            sixdigitCode.append(randint(0,9))
+    
+        if not cache.has(sixdigitCode): #check if this six digit code is already in the cache
+            break
         
     if cache.has(deviceID): #check if the same user has already some data in the cache
         userOldVerifData = cache.get(deviceID)
@@ -32,7 +37,7 @@ def processSixDigitFromApp():
         
     cache.set(deviceID,sixdigitCode,timeout=2*60) #map deviceID to sixdigitCode
     cache.set(sixdigitCode,[passwordItems, bankCardItems, otherItems, deviceID],timeout=2*60) #map sixdigitCode to passer items data
-    return 'server: ok', 201
+    return sixdigitCode
 
 #Passer - QR code
 @app.route('/qr', methods=['POST'])

@@ -37,7 +37,7 @@ def processSixDigitFromApp():
         
     cache.set(deviceID,sixdigitCode,timeout=2*60) #map deviceID to sixdigitCode
     cache.set(sixdigitCode,[passwordItems, bankCardItems, otherItems, deviceID],timeout=2*60) #map sixdigitCode to passer items data
-    return sixdigitCode
+    return ''.join(map(str, sixdigitCode))
 
 #Passer - QR code
 @app.route('/qr', methods=['POST'])
